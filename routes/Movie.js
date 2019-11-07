@@ -16,7 +16,6 @@ Router.get("/movie", (req,res) => {
 Router.post('/addmovie' , (req, res) => {
 
     var movie_name = req.body.movie_name;
-    console.log(req.body)
     var movie_description = req.body.movie_description;
     var movie_url = req.body.movie_url;
     var movie_release_date = req.body.movie_release_date;
@@ -35,5 +34,39 @@ Router.post('/addmovie' , (req, res) => {
     })
 
 });
+
+Router.post('/deletemovie' , (req, res) => {
+
+    var movie_name = req.body.movie_name;
+    let sql = "delete from movie where movie_name = ? ";
+    
+    mysqlConnection.query(sql, [movie_name], (err, row, fields)=>{
+        if(!err){
+            res.send(row)
+        }
+        else{
+            res.send(err)
+        }
+    })
+
+});
+
+Router.post('/editmovie' , (req, res) => {
+
+    var watched = req.body.watched;
+    var movie_name = req.body.movie_name;
+    let sql = "update movie set watched = ? where movie_name = ? ";
+    
+    mysqlConnection.query(sql, [watched, movie_name], (err, row, fields)=>{
+        if(!err){
+            res.send(row)
+        }
+        else{
+            res.send(err)
+        }
+    })
+
+});
+
 
 module.exports = Router;
